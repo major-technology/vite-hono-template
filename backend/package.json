@@ -1,0 +1,25 @@
+{
+	"name": "backend",
+	"private": true,
+	"type": "module",
+	"main": "dist/index.js",
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"build": "tsup",
+		"start": "node dist/index.js",
+		"typecheck": "tsc --noEmit -p ."
+	},
+	"dependencies": {
+		"@hono/node-server": "^2.1.5",
+		"@hono/zod-openapi": "^1.6.3",
+		"hono": "^4.13.14",
+		"zod": "^4.6.7"
+	},
+	"devDependencies": {
+		"@types/node": "^24.19.2",
+		"shared": "workspace:*",
+		"tsup": "^8.5.1",
+		"tsx": "^4.23.15",
+		"typescript": "^6.0.3"
+	}
+}

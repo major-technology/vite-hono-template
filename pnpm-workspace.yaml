@@ -1,0 +1,9 @@
+packages:
+  - frontend
+  - backend
+  - shared
+onlyBuiltDependencies:
+  - esbuild
+
+# Required by `pnpm deploy` (pnpm 10), which packages backend/ for deployment.
+injectWorkspacePackages: true

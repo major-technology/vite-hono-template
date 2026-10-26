@@ -1,0 +1,14 @@
+{
+	"name": "major-app",
+	"private": true,
+	"packageManager": "pnpm@10.33.4",
+	"scripts": {
+		"dev": "concurrently -k -n frontend,backend -c cyan,magenta \"BACKEND_PORT=3002 pnpm --filter ./frontend dev\" \"PORT=3002 pnpm --filter ./backend dev\"",
+		"build": "pnpm --filter ./frontend build && pnpm --filter ./backend build",
+		"lint": "oxlint && pnpm -r --parallel typecheck"
+	},
+	"devDependencies": {
+		"concurrently": "^10.0.6",
+		"oxlint": "^1.89.0"
+	}
+}
