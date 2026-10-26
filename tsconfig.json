@@ -10,8 +10,7 @@
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"isolatedModules": true,
-		"resolveJsonModule": true,
-		"paths": { "@/*": ["./frontend/src/*"] }
+		"resolveJsonModule": true
 	},
 	"include": ["frontend/src", "backend/src", "shared/src"]
 }
