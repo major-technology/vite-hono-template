@@ -10,8 +10,8 @@ export function App() {
 	const pathname = usePathname();
 
 	return (
-		<div className="container">
-			<nav>
+		<div className="mx-auto max-w-3xl px-4 py-8 font-sans">
+			<nav className="mb-6 flex gap-4 text-primary">
 				<Link to="/">Home</Link>
 				<Link to="/about">About</Link>
 			</nav>

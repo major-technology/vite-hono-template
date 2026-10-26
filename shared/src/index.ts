@@ -6,6 +6,12 @@ export interface HelloResponse {
 	message: string;
 }
 
-export interface MeResponse {
-	signedIn: boolean;
+export interface User {
+	userId: string;
+	email: string;
+	name: string;
+}
+
+export interface CurrentUserResponse {
+	user: User;
 }

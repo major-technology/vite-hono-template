@@ -3,8 +3,8 @@
  */
 export default function Details() {
 	return (
-		<div className="card">
-			<h2>Stack</h2>
+		<div className="rounded-lg border bg-card p-4 text-card-foreground">
+			<h2 className="mb-2 font-mono text-sm text-muted-foreground">Stack</h2>
 			<ul>
 				<li>frontend/: Vite + React single-page app</li>
 				<li>backend/: Hono API under /api</li>
