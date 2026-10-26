@@ -21,6 +21,7 @@ shared/     types used by both (optional: rename or delete it freely)
 
 - `src/app.ts` builds the `OpenAPIHono` app with `.basePath("/api")`. `src/index.ts` only starts the server.
 - Define every route with `createRoute` and zod schemas from `@hono/zod-openapi`, in a file under `src/routes/`, and register it in `src/app.ts`. The OpenAPI document is served at `/api/openapi.json`.
+- `src/app.ts` registers `contextStorage()` before every route. Code outside a handler reads the current request with `getContext()` from `hono/context-storage`, so do not pass `c` down through helpers.
 - Keep `GET /api/healthz`. The platform uses it as the health check.
 - The signed-in user's identity arrives in the `x-major-user-jwt` request header. It may be absent locally.
 - The backend is stateless. Instances restart and scale at any time, so:
