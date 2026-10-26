@@ -1,25 +1,27 @@
 /**
- * Reports whether the request carries a signed-in user. The platform sets
- * `x-major-user-jwt` on every request it forwards; it may be absent locally.
+ * Returns the signed-in user. The platform sets `x-major-user-jwt` on every
+ * request it forwards; locally, getCurrentUser falls back to MAJOR_JWT_TOKEN.
  */
 import { createRoute, z, type OpenAPIHono } from "@hono/zod-openapi";
-import type { MeResponse } from "shared";
+import { getCurrentUser } from "../lib/auth.js";
 
 const meRoute = createRoute({
 	method: "get",
 	path: "/me",
 	responses: {
 		200: {
-			description: "Whether a user is signed in",
-			content: { "application/json": { schema: z.object({ signedIn: z.boolean() }) } },
+			description: "The signed-in user",
+			content: {
+				"application/json": {
+					schema: z.object({
+						user: z.object({ userId: z.string(), email: z.string(), name: z.string() }),
+					}),
+				},
+			},
 		},
 	},
 });
 
 export function registerMeRoutes(app: OpenAPIHono) {
-	app.openapi(meRoute, (c) => {
-		const body: MeResponse = { signedIn: Boolean(c.req.header("x-major-user-jwt")) };
-
-		return c.json(body, 200);
-	});
+	app.openapi(meRoute, async (c) => c.json(await getCurrentUser(), 200));
 }

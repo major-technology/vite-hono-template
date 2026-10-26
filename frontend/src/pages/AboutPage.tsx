@@ -7,8 +7,8 @@ const Details = lazy(() => import("../components/Details"));
 
 export function AboutPage() {
 	return (
-		<section>
-			<h1>About</h1>
+		<section className="flex flex-col gap-4">
+			<h1 className="text-2xl font-semibold">About</h1>
 			<p>This page is rendered client-side. Reload it to check that deep links work.</p>
 			<Suspense fallback={<p>Loading details...</p>}>
 				<Details />

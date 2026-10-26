@@ -15,7 +15,7 @@ export function Link({ to, children }: { to: string; children: ReactNode }) {
 	};
 
 	return (
-		<a href={to} onClick={onClick}>
+		<a href={to} onClick={onClick} className="hover:underline">
 			{children}
 		</a>
 	);
