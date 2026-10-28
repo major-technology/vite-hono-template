@@ -1,44 +1,36 @@
 /**
- * Home page: calls the backend through relative /api URLs and shows the results.
+ * Home page: a greeting from the backend and an empty area to build in.
  */
 import { useEffect, useState } from "react";
-import type { CurrentUserResponse, HelloResponse } from "shared";
-
-async function getJson<T>(url: string): Promise<T> {
-	const res = await fetch(url);
-
-	if (!res.ok) {
-		throw new Error(`${url} returned ${res.status}`);
-	}
-
-	return (await res.json()) as T;
-}
+import type { HelloResponse } from "shared";
+import { getJson } from "../lib/api";
 
 export function HomePage() {
 	const [hello, setHello] = useState<HelloResponse>();
-	const [me, setMe] = useState<CurrentUserResponse>();
 	const [error, setError] = useState<string>();
 
 	useEffect(() => {
-		Promise.all([getJson<HelloResponse>("/api/hello?name=Major"), getJson<CurrentUserResponse>("/api/me")])
-			.then(([helloBody, meBody]) => {
-				setHello(helloBody);
-				setMe(meBody);
-			})
+		getJson<HelloResponse>("/api/hello?name=Major")
+			.then(setHello)
 			.catch((err: unknown) => setError(String(err)));
 	}, []);
 
 	return (
-		<section className="flex flex-col gap-4">
-			<h1 className="text-2xl font-semibold">Your new app</h1>
-			{error && <p className="text-destructive">{error}</p>}
-			<div className="rounded-lg border bg-card p-4 text-card-foreground">
-				<h2 className="mb-2 font-mono text-sm text-muted-foreground">GET /api/hello</h2>
-				<p>{hello ? hello.message : "Loading..."}</p>
-			</div>
-			<div className="rounded-lg border bg-card p-4 text-card-foreground">
-				<h2 className="mb-2 font-mono text-sm text-muted-foreground">GET /api/me</h2>
-				<p>{me ? `${me.user.name} (${me.user.email})` : "Loading..."}</p>
+		<section className="flex flex-1 flex-col gap-6">
+			<header>
+				<h1 className="text-xl font-semibold tracking-tight">Home</h1>
+				{error ? (
+					<p className="text-destructive">{error}</p>
+				) : (
+					<p className="text-muted-foreground">{hello ? hello.message : "Loading..."}</p>
+				)}
+			</header>
+			<div className="grid flex-1 place-items-center rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+				<p>
+					Your content goes here.
+					<br />
+					<span className="font-mono">frontend/src/pages/HomePage.tsx</span>
+				</p>
 			</div>
 		</section>
 	);
