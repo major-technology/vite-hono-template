@@ -21,6 +21,17 @@ shared/     types used by both (optional: rename or delete it freely)
 - shadcn/ui is initialized (`components.json`). Add components from `frontend/`: `npx shadcn@latest add button`. They go to `src/components/ui/`.
 - `@/` resolves to `frontend/src/`. Merge class names with `cn()` from `@/lib/utils`.
 
+## Pages (`frontend/src/routes/`)
+
+Pages are TanStack Router file routes. The preview's page picker lists the pages in this folder, so a page chosen any other way (a `pathname` check, a `switch`, another router) is invisible to the user.
+
+- One file per URL: `index.tsx` is `/`, `about.tsx` is `/about`, `tickets/index.tsx` is `/tickets`, `tickets/$ticketId.tsx` is `/tickets/$ticketId`. `__root.tsx` is the shell around every page and renders the page in `<Outlet />`; a folder's `route.tsx` is the layout around that folder's pages.
+- A route file exports `Route = createFileRoute("/tickets/$ticketId")({ component })`. The dev server keeps the path string in sync with the file name.
+- Read params with `Route.useParams()`. Keep state a user should be able to link to (filters, tab, selected row) in search params: declare `validateSearch` and read with `Route.useSearch()`.
+- Navigate with `<Link to="/tickets/$ticketId" params={{ ticketId }}>` or `useNavigate()` from `@tanstack/react-router`, never `<a href>`, `window.location` or `history.pushState`. Links are type-checked against the routes, so `pnpm lint` fails on a link to a page that does not exist.
+- Components used by one page go next to it in a `-`-prefixed folder (`tickets/-components/`), which the router skips. Shared ones go in `src/components/`.
+- `src/routeTree.gen.ts` is generated from `src/routes/` by the dev server. Never edit it; commit it with your route changes.
+
 ## Backend (`backend/`)
 
 - `src/app.ts` builds the `OpenAPIHono` app with `.basePath("/api")`. `src/index.ts` only starts the server.

@@ -1,21 +1,22 @@
 /**
- * App shell: sidebar navigation and the signed-in user, plus the page for the current path.
+ * App shell: sidebar navigation and the signed-in user around every page. The page for the current URL renders in <Outlet />.
  */
 import { useEffect, useState } from "react";
+import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import type { CurrentUserResponse, User } from "shared";
-import { Link } from "./Link";
-import { usePathname } from "./router";
-import { getJson } from "./lib/api";
-import { HomePage } from "./pages/HomePage";
-import { AboutPage } from "./pages/AboutPage";
+import { getJson } from "../lib/api";
+
+export const Route = createRootRoute({
+	component: RootLayout,
+	notFoundComponent: () => <p className="text-muted-foreground">Page not found.</p>,
+});
 
 const navItems = [
 	{ to: "/", label: "Home" },
 	{ to: "/about", label: "About" },
-];
+] as const;
 
-export function App() {
-	const pathname = usePathname();
+function RootLayout() {
 	const [user, setUser] = useState<User>();
 
 	useEffect(() => {
@@ -30,7 +31,14 @@ export function App() {
 				<span className="px-2 font-semibold">My app</span>
 				<nav className="flex gap-1 md:flex-col">
 					{navItems.map((item) => (
-						<Link key={item.to} to={item.to} active={pathname === item.to}>
+						<Link
+							key={item.to}
+							to={item.to}
+							// "/" prefixes every path, so Home is active only on itself.
+							activeOptions={{ exact: item.to === "/" }}
+							className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground"
+							activeProps={{ className: "bg-background text-foreground shadow-xs ring-1 ring-border" }}
+						>
 							{item.label}
 						</Link>
 					))}
@@ -48,7 +56,7 @@ export function App() {
 				)}
 			</aside>
 			<main className="flex min-w-0 flex-1 flex-col p-6 md:p-8">
-				{pathname === "/about" ? <AboutPage /> : <HomePage />}
+				<Outlet />
 			</main>
 		</div>
 	);

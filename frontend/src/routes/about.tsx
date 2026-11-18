@@ -1,11 +1,16 @@
 /**
- * About page: a second route, with a lazily loaded component in its own chunk.
+ * About page ("/about"): a second route, with a lazily loaded component in its own chunk.
  */
 import { lazy, Suspense } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 
 const Details = lazy(() => import("../components/Details"));
 
-export function AboutPage() {
+export const Route = createFileRoute("/about")({
+	component: AboutPage,
+});
+
+function AboutPage() {
 	return (
 		<section className="flex flex-col gap-6">
 			<header>

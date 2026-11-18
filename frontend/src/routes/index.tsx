@@ -1,11 +1,16 @@
 /**
- * Home page: a greeting from the backend and an empty area to build in.
+ * Home page ("/"): a greeting from the backend and an empty area to build in.
  */
 import { useEffect, useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import type { HelloResponse } from "shared";
 import { getJson } from "../lib/api";
 
-export function HomePage() {
+export const Route = createFileRoute("/")({
+	component: HomePage,
+});
+
+function HomePage() {
 	const [hello, setHello] = useState<HelloResponse>();
 	const [error, setError] = useState<string>();
 
@@ -29,7 +34,7 @@ export function HomePage() {
 				<p>
 					Your content goes here.
 					<br />
-					<span className="font-mono">frontend/src/pages/HomePage.tsx</span>
+					<span className="font-mono">frontend/src/routes/index.tsx</span>
 				</p>
 			</div>
 		</section>
